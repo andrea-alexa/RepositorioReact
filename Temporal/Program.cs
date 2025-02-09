@@ -12,7 +12,7 @@ foreach (var item in alumno)
 #endregion
 Console.WriteLine(" ");
 #region SlectById
-var selectById = alumnoDao.GetById(1000);
+var selectById = alumnoDao.GetById(5);
 Console.WriteLine(selectById?.Nombre);
 #endregion
 Console.WriteLine(" ");
@@ -47,4 +47,13 @@ Console.WriteLine(" ");
 #region borrar
 var result = alumnoDao.deleteAlumno(1007);
 Console.WriteLine("Se elimino " + result);
+#endregion
+
+#region alumnoAsignatura desde un join
+var alumAsig = alumnoDao.SelectAlumAsig();
+
+foreach (AlumnoAsignatura alumAsig2 in alumAsig)
+{
+    Console.WriteLine(alumAsig2.NombreAlumno + "Asignatura que cursa" + alumAsig2.NombreAsignatura);
+}
 #endregion
