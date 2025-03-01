@@ -146,5 +146,70 @@ namespace ReactBackend.Repository
             return listadoALumno.ToList();
         }
         #endregion
+
+        #region SeleccionPorDNI
+        public Alumno DNIAlumno(Alumno alumno)
+        {
+            var alumnos = contexto.Alumnos.Where(x => x.Dni == alumno.Dni).FirstOrDefault();
+            return alumnos == null ? null : alumnos;
+        }
+        #endregion
+
+        #region AlumnoMatricula
+        public bool InsertarMatricula(Alumno alumno, int idAsig)
+        {
+            try
+            {
+                var alumnoDNI = DNIAlumno(alumno);
+
+                if (alumno == null)
+                {
+                    insertarAlumno(alumno);
+
+                    var alumnoInsertado = DNIAlumno(alumno);
+                    var unirAlumnoMatricula = matriculaAsignatiraAlumno(alumno, idAsig);
+                    
+                    if (unirAlumnoMatricula == false)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+                else
+                {
+                    matriculaAsignatiraAlumno(alumnoDNI, idAsig);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+        #endregion
+
+        #region matriculaAsignatiraAlumno
+        public bool matriculaAsignatiraAlumno(Alumno alumno, int idAsignatura)
+        {
+            try
+            {
+                Matricula matricula = new Matricula();
+
+                matricula.AlumnoId = alumno.Id;
+                matricula.AsignaturaId = idAsignatura;
+
+                contexto.Matriculas.Add(matricula);
+                contexto.SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+        #endregion
     }
 }

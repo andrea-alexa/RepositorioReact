@@ -35,5 +35,13 @@ namespace WebApi.Controllers
             return _dao.update(alumno.Id, alumno);
         }
         #endregion
+
+        #region AlumnoMatricula
+        [HttpPost("alumno")]
+        public bool insertarMatricula([FromBody] Alumno alumno, int idAsignaruta)
+        {
+            return _dao.InsertarMatricula(alumno, idAsignaruta);
+        }
+        #endregion
     }
 }
